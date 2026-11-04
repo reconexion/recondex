@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
 import com.recondex.app.ui.theme.DuoGreen
