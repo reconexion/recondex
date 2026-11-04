@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,11 +23,15 @@ import com.recondex.app.core.AppDetail
 import com.recondex.app.core.AppSummary
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
+import com.recondex.app.core.TOOLS
 import com.recondex.app.ui.components.CompleteToolFooter
+import com.recondex.app.ui.components.DuoButton
+import com.recondex.app.ui.components.ExplainerCard
 import com.recondex.app.ui.components.ToolScaffold
 
 @Composable
 fun ApkAnalyzerScreen(progress: ProgressStore) {
+    val tool = remember { TOOLS.first { it.id == "apk" } }
     val context = LocalContext.current
     var apps by remember { mutableStateOf(listOf<AppSummary>()) }
     var selected by remember { mutableStateOf<AppDetail?>(null) }
@@ -40,8 +43,15 @@ fun ApkAnalyzerScreen(progress: ProgressStore) {
     ToolScaffold(title = "Analizador de APKs") {
         val detail = selected
         if (detail == null) {
-            Text("Toca una app para ver permisos, componentes expuestos y firma.", style = MaterialTheme.typography.bodyMedium)
             LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
+                item { ExplainerCard(tool.whatItDoes, tool.example, tool.accent) }
+                item {
+                    Text(
+                        "Toca una app para ver permisos, componentes expuestos y firma.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
+                    )
+                }
                 items(apps) { app ->
                     Text(
                         "${if (app.isSystemApp) "⚙️" else "📱"} ${app.label}  (${app.packageName})",
@@ -55,19 +65,19 @@ fun ApkAnalyzerScreen(progress: ProgressStore) {
                     )
                     Divider()
                 }
-                item { CompleteToolFooter(progress, toolId = "apk", xp = 20) }
+                item { CompleteToolFooter(progress, toolId = "apk") }
             }
         } else {
-            AppDetailView(detail, onBack = { selected = null })
+            AppDetailView(detail, accent = tool.accent, onBack = { selected = null })
         }
     }
 }
 
 @Composable
-private fun AppDetailView(detail: AppDetail, onBack: () -> Unit) {
+private fun AppDetailView(detail: AppDetail, accent: androidx.compose.ui.graphics.Color, onBack: () -> Unit) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         item {
-            Button(onClick = onBack) { Text("← Volver a la lista") }
+            DuoButton(text = "← Volver a la lista", color = accent, onClick = onBack)
         }
         item {
             Text(detail.label, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(top = 10.dp))

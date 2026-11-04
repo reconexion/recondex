@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.TOOLS
@@ -14,9 +15,10 @@ import com.recondex.app.core.TOOLS
 @Composable
 fun ProfileScreen(progress: ProgressStore) {
     Column(modifier = Modifier.fillMaxSize().padding(20.dp)) {
-        Text("Tu perfil", style = MaterialTheme.typography.headlineMedium)
-        Text("Racha actual: ${progress.streak} días", modifier = Modifier.padding(top = 12.dp))
-        Text("XP total: ${progress.xp}")
-        Text("Herramientas completadas: ${progress.completedTools.size}/${TOOLS.size}", modifier = Modifier.padding(top = 4.dp))
+        Text("Tu perfil", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.ExtraBold)
+        Text(
+            "Herramientas exploradas: ${progress.completedTools.size}/${TOOLS.size}",
+            modifier = Modifier.padding(top = 12.dp)
+        )
     }
 }

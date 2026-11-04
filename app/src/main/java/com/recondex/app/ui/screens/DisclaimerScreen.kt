@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GppGood
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.recondex.app.ui.components.DuoButton
 
 @Composable
 fun DisclaimerScreen(onAccept: () -> Unit) {
@@ -53,9 +54,11 @@ fun DisclaimerScreen(onAccept: () -> Unit) {
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
             Spacer(Modifier.height(28.dp))
-            Button(onClick = onAccept) {
-                Text("Entiendo y acepto usarla de forma responsable")
-            }
+            DuoButton(
+                text = "Entiendo y acepto usarla de forma responsable",
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onAccept
+            )
         }
     }
 }

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,13 +30,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
+import com.recondex.app.core.TOOLS
 import com.recondex.app.ui.components.CompleteToolFooter
+import com.recondex.app.ui.components.DuoButton
+import com.recondex.app.ui.components.ExplainerCard
 import com.recondex.app.ui.components.ToolScaffold
 
 private data class BleDevice(val name: String, val address: String, val rssi: Int)
 
 @Composable
 fun BleScannerScreen(progress: ProgressStore) {
+    val tool = remember { TOOLS.first { it.id == "ble" } }
     val context = LocalContext.current
     val adapter = remember {
         (context.getSystemService(android.content.Context.BLUETOOTH_SERVICE) as? BluetoothManager)?.adapter
@@ -84,16 +87,16 @@ fun BleScannerScreen(progress: ProgressStore) {
 
     ToolScaffold(title = "Escáner BLE") {
         LazyColumn {
+            item { ExplainerCard(tool.whatItDoes, tool.example, tool.accent) }
             item {
-                Text("Escanea dispositivos Bluetooth Low Energy cercanos y explora sus servicios GATT.", style = MaterialTheme.typography.bodyMedium)
-            }
-            item {
-                Button(
-                    modifier = Modifier.padding(top = 10.dp),
+                DuoButton(
+                    text = if (scanning) "Detener escaneo" else "Iniciar escaneo BLE",
+                    color = tool.accent,
+                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                     onClick = {
                         if (!hasPermissions) {
                             permissionLauncher.launch(neededPermissions)
-                            return@Button
+                            return@DuoButton
                         }
                         if (scanning) {
                             runCatching { adapter?.bluetoothLeScanner?.stopScan(scanCallback) }
@@ -105,7 +108,7 @@ fun BleScannerScreen(progress: ProgressStore) {
                             SoundFx.tap()
                         }
                     }
-                ) { Text(if (scanning) "Detener escaneo" else "Iniciar escaneo BLE") }
+                )
             }
             item { Divider(modifier = Modifier.padding(vertical = 10.dp)) }
             items(devices.value) { device ->
@@ -142,7 +145,7 @@ fun BleScannerScreen(progress: ProgressStore) {
                     Text(info, style = MaterialTheme.typography.bodyMedium)
                 }
             }
-            item { CompleteToolFooter(progress, toolId = "ble", xp = 15) }
+            item { CompleteToolFooter(progress, toolId = "ble") }
         }
     }
 }

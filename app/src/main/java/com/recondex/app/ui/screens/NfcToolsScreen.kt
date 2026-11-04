@@ -5,12 +5,13 @@ import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -27,11 +28,16 @@ import androidx.compose.ui.unit.dp
 import com.recondex.app.core.NfcUtils
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
+import com.recondex.app.core.TOOLS
 import com.recondex.app.ui.components.CompleteToolFooter
+import com.recondex.app.ui.components.DuoButton
+import com.recondex.app.ui.components.ExplainerCard
 import com.recondex.app.ui.components.ToolScaffold
+import com.recondex.app.ui.theme.DuoBlue
 
 @Composable
 fun NfcToolsScreen(progress: ProgressStore) {
+    val tool = remember { TOOLS.first { it.id == "nfc" } }
     val context = LocalContext.current
     val activity = context as? Activity
     val adapter = remember { NfcAdapter.getDefaultAdapter(context) }
@@ -70,13 +76,28 @@ fun NfcToolsScreen(progress: ProgressStore) {
 
     ToolScaffold(title = "Herramientas NFC") {
         LazyColumn {
+            item { ExplainerCard(tool.whatItDoes, tool.example, tool.accent) }
             item {
                 if (adapter == null) {
-                    Text("Este dispositivo no tiene NFC disponible.", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        "Este dispositivo no tiene NFC disponible.",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
                 } else {
-                    Row {
-                        Button(onClick = { mode = "leer"; status = "Acerca un tag NFC para leer..." }) { Text("Modo leer") }
-                        Button(onClick = { mode = "escribir"; status = "Escribe el texto y acerca el tag" }, modifier = Modifier.padding(start = 8.dp)) { Text("Modo escribir") }
+                    Row(modifier = Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        DuoButton(
+                            text = "Modo leer",
+                            color = if (mode == "leer") tool.accent else DuoBlue.copy(alpha = 0.35f),
+                            modifier = Modifier.weight(1f),
+                            onClick = { mode = "leer"; status = "Acerca un tag NFC para leer..." }
+                        )
+                        DuoButton(
+                            text = "Modo escribir",
+                            color = if (mode == "escribir") tool.accent else DuoBlue.copy(alpha = 0.35f),
+                            modifier = Modifier.weight(1f),
+                            onClick = { mode = "escribir"; status = "Escribe el texto y acerca el tag" }
+                        )
                     }
                 }
             }
@@ -93,7 +114,7 @@ fun NfcToolsScreen(progress: ProgressStore) {
             item { Text(status, modifier = Modifier.padding(top = 12.dp), style = MaterialTheme.typography.titleMedium) }
             item { Divider(modifier = Modifier.padding(vertical = 10.dp)) }
             items(readLines.value) { line -> Text(line, modifier = Modifier.padding(vertical = 2.dp)) }
-            item { CompleteToolFooter(progress, toolId = "nfc", xp = 15) }
+            item { CompleteToolFooter(progress, toolId = "nfc") }
         }
     }
 }

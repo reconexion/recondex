@@ -1,13 +1,11 @@
 package com.recondex.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -24,12 +22,16 @@ import androidx.compose.ui.unit.dp
 import com.recondex.app.core.NetworkUtils
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
+import com.recondex.app.core.TOOLS
 import com.recondex.app.ui.components.CompleteToolFooter
+import com.recondex.app.ui.components.DuoButton
+import com.recondex.app.ui.components.ExplainerCard
 import com.recondex.app.ui.components.ToolScaffold
 import kotlinx.coroutines.launch
 
 @Composable
 fun NetworkScannerScreen(progress: ProgressStore) {
+    val tool = remember { TOOLS.first { it.id == "network" } }
     val scope = rememberCoroutineScope()
 
     var scanningHosts by remember { mutableStateOf(false) }
@@ -42,21 +44,29 @@ fun NetworkScannerScreen(progress: ProgressStore) {
 
     ToolScaffold(title = "Escáner de Red") {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            item { ExplainerCard(tool.whatItDoes, tool.example, tool.accent) }
             item {
-                Text("1. Descubrir hosts en tu red local", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "1. Descubrir hosts en tu red local",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 12.dp)
+                )
                 Text(
                     "Prueba conexión a puertos comunes en cada IP de tu subred /24 para ver qué dispositivos responden.",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
             item {
-                Button(
+                DuoButton(
+                    text = if (scanningHosts) "Escaneando..." else "Descubrir hosts",
+                    color = tool.accent,
                     enabled = !scanningHosts,
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     onClick = {
                         val localIp = NetworkUtils.getLocalIPv4()
                         if (localIp == null) {
                             SoundFx.error()
-                            return@Button
+                            return@DuoButton
                         }
                         hosts.value = emptyList()
                         scanningHosts = true
@@ -69,7 +79,7 @@ fun NetworkScannerScreen(progress: ProgressStore) {
                             SoundFx.success()
                         }
                     }
-                ) { Text(if (scanningHosts) "Escaneando..." else "Descubrir hosts") }
+                )
             }
             if (scanningHosts) item { CircularProgressIndicator(modifier = Modifier.padding(8.dp)) }
             items(hosts.value) { host ->
@@ -94,8 +104,11 @@ fun NetworkScannerScreen(progress: ProgressStore) {
                 )
             }
             item {
-                Button(
+                DuoButton(
+                    text = if (scanningPorts) "Escaneando..." else "Escanear puertos",
+                    color = tool.accent,
                     enabled = !scanningPorts && targetIp.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     onClick = {
                         val ports = parsePortRange(portRange)
                         openPorts.value = emptyList()
@@ -107,9 +120,8 @@ fun NetworkScannerScreen(progress: ProgressStore) {
                             scanningPorts = false
                             SoundFx.success()
                         }
-                    },
-                    modifier = Modifier.padding(top = 8.dp)
-                ) { Text(if (scanningPorts) "Escaneando..." else "Escanear puertos") }
+                    }
+                )
             }
             if (scanningPorts) item { CircularProgressIndicator(modifier = Modifier.padding(8.dp)) }
             items(openPorts.value) { port ->
@@ -118,7 +130,7 @@ fun NetworkScannerScreen(progress: ProgressStore) {
                 }
             }
 
-            item { CompleteToolFooter(progress, toolId = "network", xp = 20) }
+            item { CompleteToolFooter(progress, toolId = "network") }
         }
     }
 }

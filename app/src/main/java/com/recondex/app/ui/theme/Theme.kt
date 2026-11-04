@@ -1,7 +1,6 @@
 package com.recondex.app.ui.theme
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -13,11 +12,14 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
-    primary = NexusIndigo,
+    primary = DuoGreen,
     onPrimary = SurfaceLight,
-    secondary = MintSuccess,
-    tertiary = AmberStreak,
-    error = DangerCoral,
+    secondary = DuoBlue,
+    onSecondary = SurfaceLight,
+    tertiary = DuoYellow,
+    onTertiary = TextPrimary,
+    error = DuoRed,
+    onError = SurfaceLight,
     background = BgLight,
     surface = SurfaceLight,
     onBackground = TextPrimary,
@@ -25,11 +27,14 @@ private val LightColors = lightColorScheme(
 )
 
 private val DarkColors = darkColorScheme(
-    primary = NexusIndigo,
+    primary = DuoGreen,
     onPrimary = SurfaceDark,
-    secondary = MintSuccess,
-    tertiary = AmberStreak,
-    error = DangerCoral,
+    secondary = DuoBlue,
+    onSecondary = SurfaceDark,
+    tertiary = DuoYellow,
+    onTertiary = TextPrimaryDark,
+    error = DuoRed,
+    onError = SurfaceDark,
     background = BgDark,
     surface = SurfaceDark,
     onBackground = TextPrimaryDark,
@@ -47,8 +52,8 @@ fun RecoNDexTheme(
         SideEffect {
             val activity = view.context as? Activity
             activity?.window?.let { window ->
-                window.statusBarColor = colorScheme.primary.toArgb()
-                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+                window.statusBarColor = colorScheme.background.toArgb()
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             }
         }
     }

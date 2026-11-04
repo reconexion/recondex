@@ -16,7 +16,7 @@ object SoundFx {
     /** Click corto para taps de tarjetas/botones. */
     fun tap() = runCatching { tg.startTone(ToneGenerator.TONE_PROP_BEEP, 60) }
 
-    /** Doble beep ascendente para "herramienta completada / +XP". */
+    /** Doble beep ascendente para "herramienta explorada / acción exitosa". */
     fun success() = runCatching { tg.startTone(ToneGenerator.TONE_PROP_ACK, 180) }
 
     /** Beep grave para errores / resultados fallidos. */

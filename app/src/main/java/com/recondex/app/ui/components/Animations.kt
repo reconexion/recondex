@@ -31,7 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-/** Icono que "respira" (pulso infinito sutil) — usado en racha/streak y estados "escuchando". */
+/** Icono que "respira" (pulso infinito sutil) — usado en estados activos/escaneando. */
 @Composable
 fun PulsingIcon(icon: ImageVector, tint: Color, contentDescription: String? = null) {
     val infinite = rememberInfiniteTransition(label = "pulse")
@@ -47,7 +47,7 @@ fun PulsingIcon(icon: ImageVector, tint: Color, contentDescription: String? = nu
     Icon(icon, contentDescription = contentDescription, tint = tint, modifier = Modifier.scale(scale))
 }
 
-/** Contador que anima el valor hacia arriba (usado para XP/racha). */
+/** Contador que anima el valor hacia arriba (usado para conteos simples, ej. herramientas exploradas). */
 @Composable
 fun AnimatedCounter(targetValue: Int, style: TextStyle, color: Color) {
     val animated by animateIntAsState(targetValue = targetValue, animationSpec = tween(500), label = "counter")
@@ -66,9 +66,9 @@ fun Modifier.pressBounce(interactionSource: MutableInteractionSource): Modifier 
     return this.scale(scale)
 }
 
-/** Popup flotante "+XP" que aparece con scale+fade y desaparece solo. */
+/** Popup flotante de confirmación (scale+fade) que aparece y desaparece solo. */
 @Composable
-fun XpGainPopup(visible: Boolean, xp: Int) {
+fun DoneConfirmPopup(visible: Boolean, text: String = "¡Listo!") {
     AnimatedVisibility(
         visible = visible,
         enter = scaleIn() + fadeIn(),
@@ -76,13 +76,13 @@ fun XpGainPopup(visible: Boolean, xp: Int) {
     ) {
         Surface(
             shape = RoundedCornerShape(14.dp),
-            color = MaterialTheme.colorScheme.tertiary
+            color = MaterialTheme.colorScheme.secondary
         ) {
             Text(
-                "¡+$xp XP!",
+                text,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onTertiary,
+                color = MaterialTheme.colorScheme.onSecondary,
                 fontWeight = FontWeight.ExtraBold
             )
         }

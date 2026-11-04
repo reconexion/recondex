@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -21,13 +20,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.recondex.app.core.ProgressStore
 import com.recondex.app.core.SoundFx
+import com.recondex.app.core.TOOLS
 import com.recondex.app.core.WebRecon
 import com.recondex.app.ui.components.CompleteToolFooter
+import com.recondex.app.ui.components.DuoButton
+import com.recondex.app.ui.components.ExplainerCard
 import com.recondex.app.ui.components.ToolScaffold
 import kotlinx.coroutines.launch
 
 @Composable
 fun WebReconScreen(progress: ProgressStore) {
+    val tool = remember { TOOLS.first { it.id == "webrecon" } }
     val scope = rememberCoroutineScope()
     var url by remember { mutableStateOf("") }
     var loading by remember { mutableStateOf(false) }
@@ -40,17 +43,24 @@ fun WebReconScreen(progress: ProgressStore) {
 
     ToolScaffold(title = "Web Recon") {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            item { ExplainerCard(tool.whatItDoes, tool.example, tool.accent) }
             item {
-                Text("1. Headers y rutas comunes", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "1. Headers y rutas comunes",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 12.dp)
+                )
                 OutlinedTextField(
                     value = url,
                     onValueChange = { url = it },
                     label = { Text("URL objetivo (ej. miapp.test)") },
                     modifier = Modifier.fillMaxWidth().padding(top = 6.dp)
                 )
-                Button(
+                DuoButton(
+                    text = if (loading) "Analizando..." else "Analizar sitio",
+                    color = tool.accent,
                     enabled = !loading && url.isNotBlank(),
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     onClick = {
                         headerResults.value = emptyList()
                         pathResults.value = emptyList()
@@ -64,7 +74,7 @@ fun WebReconScreen(progress: ProgressStore) {
                             SoundFx.success()
                         }
                     }
-                ) { Text(if (loading) "Analizando..." else "Analizar sitio") }
+                )
             }
             if (loading) item { CircularProgressIndicator(modifier = Modifier.padding(8.dp)) }
             items(headerResults.value) { h ->
@@ -85,9 +95,11 @@ fun WebReconScreen(progress: ProgressStore) {
                     label = { Text("URL con parámetro") },
                     modifier = Modifier.fillMaxWidth().padding(top = 6.dp)
                 )
-                Button(
+                DuoButton(
+                    text = if (sqliLoading) "Probando..." else "Probar SQLi básico",
+                    color = tool.accent,
                     enabled = !sqliLoading && sqliUrl.isNotBlank(),
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     onClick = {
                         sqliLoading = true
                         sqliResult = null
@@ -97,12 +109,12 @@ fun WebReconScreen(progress: ProgressStore) {
                             SoundFx.success()
                         }
                     }
-                ) { Text(if (sqliLoading) "Probando..." else "Probar SQLi básico") }
+                )
             }
             if (sqliLoading) item { CircularProgressIndicator(modifier = Modifier.padding(8.dp)) }
             sqliResult?.let { r -> item { Text(r, modifier = Modifier.padding(top = 6.dp)) } }
 
-            item { CompleteToolFooter(progress, toolId = "webrecon", xp = 25) }
+            item { CompleteToolFooter(progress, toolId = "webrecon") }
         }
     }
 }
