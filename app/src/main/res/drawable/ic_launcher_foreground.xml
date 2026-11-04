@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mascota: carita de robot kawaii con acabado "botón de vidrio" Y2K
+     (bisel, brillo especular arriba, glint), al estilo de los iconos
+     de iPhone de finales de los 2000. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Bisel/sombra sutil detrás de la cabeza (simula profundidad) -->
+    <path
+        android:pathData="M28,42 L80,42 A14,14 0 0 1 94,56 L94,76 A14,14 0 0 1 80,90 L28,90 A14,14 0 0 1 14,76 L14,56 A14,14 0 0 1 28,42 Z"
+        android:fillColor="#1C2560" />
+
+    <!-- Cabeza redondeada del robot (ligeramente arriba del bisel, crea efecto de relieve) -->
+    <path
+        android:pathData="M28,40 L80,40 A14,14 0 0 1 94,54 L94,74 A14,14 0 0 1 80,88 L28,88 A14,14 0 0 1 14,74 L14,54 A14,14 0 0 1 28,40 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Antena -->
+    <path
+        android:pathData="M54,40 L54,26"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M54,16 m-6,0 a6,6 0 1 0 12,0 a6,6 0 1 0 -12,0"
+        android:fillColor="#FFC14D" />
+    <!-- Glint en la bolita de la antena -->
+    <path
+        android:pathData="M51,13 m-2,0 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.85" />
+
+    <!-- Ojo izquierdo (ovalo grande kawaii) -->
+    <path
+        android:pathData="M30,52 m-11,10 a11,13 0 1 0 22,0 a11,13 0 1 0 -22,0"
+        android:fillColor="#2B2D6B" />
+    <path
+        android:pathData="M34,56 m-4,0 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Ojo derecho -->
+    <path
+        android:pathData="M78,52 m-11,10 a11,13 0 1 0 22,0 a11,13 0 1 0 -22,0"
+        android:fillColor="#2B2D6B" />
+    <path
+        android:pathData="M82,56 m-4,0 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Sonrisa -->
+    <path
+        android:pathData="M46,74 Q54,80 62,74"
+        android:strokeColor="#2B2D6B"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Brillo especular grande cruzando la mitad superior, el clásico "glass shine" Y2K -->
+    <path
+        android:pathData="M16,52 A38,16 0 0 1 92,52 L92,58 A38,13 0 0 1 16,58 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.38" />
+
+    <!-- Glint puntual arriba a la izquierda -->
+    <path
+        android:pathData="M24,46 m-3,0 a3,3 0 1 0 6,0 a3,3 0 1 0 -6,0"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.75" />
+</vector>

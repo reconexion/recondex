@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo degradado estilo Y2K/skeuomorfo (look "botón de vidrio" de los iconos
+     de iPhone viejos): claro arriba, intenso abajo. El sistema recorta esto
+     en la forma adaptativa que use el launcher (círculo/squircle/etc). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:startColor="#8D9BFF"
+        android:centerColor="#5B6EF5"
+        android:endColor="#2E3BAE"
+        android:angle="270" />
+</shape>

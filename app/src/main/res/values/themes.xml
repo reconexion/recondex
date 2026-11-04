@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.RecoNDex" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#5B6EF5</item>
+        <item name="android:windowBackground">#F7F8FC</item>
+    </style>
+</resources>
